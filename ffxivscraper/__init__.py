@@ -25,8 +25,8 @@ def strip_tags(html, invalid_tags):
 
             for c in tag.contents:
                 if not isinstance(c, bs4.NavigableString):
-                    c = strip_tags(unicode(c), invalid_tags)
-                s += unicode(c)
+                    c = strip_tags(str(c), invalid_tags)
+                s += str(c)
 
             tag.replaceWith(s)
 
@@ -126,8 +126,8 @@ class FFXIvScraper(Scraper):
         page_server = page_server.strip()[1:-1]
 
         if page_name != character_name or page_server != server_name:
-            print "%s %s" % (page_name, page_server)
-            print "Name mismatch"
+            print("%s %s" % (page_name, page_server))
+            print("Name mismatch")
             return False
 
         return lodestone_id if soup.select('.txt_selfintroduction')[0].text.strip() == verification_code else False
@@ -157,7 +157,7 @@ class FFXIvScraper(Scraper):
 
         # Race, Tribe, Gender
         race, clan, gender = soup.select('.chara_profile_title')[0].text.split(' / ')
-        gender = 'male' if gender.strip('\n\t')[-1] == u'\u2642' else 'female'
+        gender = 'male' if gender.strip('\n\t')[-1] == '\u2642' else 'female'
 
         # Nameday & Guardian
         nameday_text = soup.find(text='Nameday').parent.parent.select('dd')[1].text
@@ -453,7 +453,7 @@ class FFXIvScraper(Scraper):
 
         if pages > 1:
             pool = Pool(5)
-            for page in xrange(2, pages + 1):
+            for page in range(2, pages + 1):
                 pool.spawn(populate_roster, page)
             pool.join()
 
